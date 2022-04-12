@@ -268,7 +268,7 @@ variable "jaeger" {
   default     = {}
 }
 
-variable "argo-cd" {
+variable "argocd" {
   description = "Customize argo-cd chart, see `argo-cd.tf` for supported values"
   type        = any
   default     = {}

@@ -220,10 +220,10 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_admiralty"></a> [admiralty](#input\_admiralty) | Customize admiralty chart, see `admiralty.tf` for supported values | `any` | `{}` | no |
-| <a name="input_argo-cd"></a> [argo-cd](#input\_argo-cd) | Customize argo-cd chart, see `argo-cd.tf` for supported values | `any` | `{}` | no |
 | <a name="input_argo-events"></a> [argo-events](#input\_argo-events) | Customize argo-events chart, see `argo-events.tf` for supported values | `any` | `{}` | no |
 | <a name="input_argo-rollouts"></a> [argo-rollouts](#input\_argo-rollouts) | Customize argo-rollouts chart, see `argo-rollouts.tf` for supported values | `any` | `{}` | no |
 | <a name="input_argo-workflows"></a> [argo-workflows](#input\_argo-workflows) | Customize argo-workflows chart, see `argo-workflows.tf` for supported values | `any` | `{}` | no |
+| <a name="input_argocd"></a> [argocd](#input\_argocd) | Customize argo-cd chart, see `argo-cd.tf` for supported values | `any` | `{}` | no |
 | <a name="input_argocd-applicationset"></a> [argocd-applicationset](#input\_argocd-applicationset) | Customize argocd-applicationset chart, see `argocd-applicationset.tf` for supported values | `any` | `{}` | no |
 | <a name="input_argocd-image-updater"></a> [argocd-image-updater](#input\_argocd-image-updater) | Customize argocd-image-updater chart, see `argocd-image-updater.tf` for supported values | `any` | `{}` | no |
 | <a name="input_argocd-notifications"></a> [argocd-notifications](#input\_argocd-notifications) | Customize argocd-notifications chart, see `argocd-notifications.tf` for supported values | `any` | `{}` | no |

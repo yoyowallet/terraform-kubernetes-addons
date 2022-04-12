@@ -1,20 +1,20 @@
 locals {
-  argo-cd = merge(
+  argocd = merge(
     local.helm_defaults,
     {
-      name                   = local.helm_dependencies[index(local.helm_dependencies.*.name, "argo-cd")].name
-      chart                  = local.helm_dependencies[index(local.helm_dependencies.*.name, "argo-cd")].name
-      repository             = local.helm_dependencies[index(local.helm_dependencies.*.name, "argo-cd")].repository
-      chart_version          = local.helm_dependencies[index(local.helm_dependencies.*.name, "argo-cd")].version
+      name                   = local.helm_dependencies[index(local.helm_dependencies.*.name, "argocd")].name
+      chart                  = local.helm_dependencies[index(local.helm_dependencies.*.name, "argocd")].name
+      repository             = local.helm_dependencies[index(local.helm_dependencies.*.name, "argocd")].repository
+      chart_version          = local.helm_dependencies[index(local.helm_dependencies.*.name, "argocd")].version
       namespace              = "argocd"
       enabled                = false
       create_ns              = false
       default_network_policy = true
     },
-    var.argo-cd
+    var.argocd
   )
 
-  values_argo-cd = <<-VALUES
+  values_argocd = <<-VALUES
     redis-ha:
       enabled: true
 
@@ -142,44 +142,44 @@ locals {
 }
 
 resource "kubernetes_namespace" "argocd" {
-  count = local.argo-cd["enabled"] && local.argo-cd["create_ns"] ? 1 : 0
+  count = local.argocd["enabled"] && local.argocd["create_ns"] ? 1 : 0
 
   metadata {
     labels = {
-      name                               = local.argo-cd["namespace"]
+      name                               = local.argocd["namespace"]
       "${local.labels_prefix}/component" = "argocd"
     }
 
-    name = local.argo-cd["namespace"]
+    name = local.argocd["namespace"]
   }
 }
 
-resource "helm_release" "argo-cd" {
-  count                 = local.argo-cd["enabled"] ? 1 : 0
-  repository            = local.argo-cd["repository"]
-  name                  = local.argo-cd["name"]
-  chart                 = local.argo-cd["chart"]
-  version               = local.argo-cd["chart_version"]
-  timeout               = local.argo-cd["timeout"]
-  force_update          = local.argo-cd["force_update"]
-  recreate_pods         = local.argo-cd["recreate_pods"]
-  wait                  = local.argo-cd["wait"]
-  atomic                = local.argo-cd["atomic"]
-  cleanup_on_fail       = local.argo-cd["cleanup_on_fail"]
-  dependency_update     = local.argo-cd["dependency_update"]
-  disable_crd_hooks     = local.argo-cd["disable_crd_hooks"]
-  disable_webhooks      = local.argo-cd["disable_webhooks"]
-  render_subchart_notes = local.argo-cd["render_subchart_notes"]
-  replace               = local.argo-cd["replace"]
-  reset_values          = local.argo-cd["reset_values"]
-  reuse_values          = local.argo-cd["reuse_values"]
-  skip_crds             = local.argo-cd["skip_crds"]
-  verify                = local.argo-cd["verify"]
+resource "helm_release" "argocd" {
+  count                 = local.argocd["enabled"] ? 1 : 0
+  repository            = local.argocd["repository"]
+  name                  = local.argocd["name"]
+  chart                 = local.argocd["chart"]
+  version               = local.argocd["chart_version"]
+  timeout               = local.argocd["timeout"]
+  force_update          = local.argocd["force_update"]
+  recreate_pods         = local.argocd["recreate_pods"]
+  wait                  = local.argocd["wait"]
+  atomic                = local.argocd["atomic"]
+  cleanup_on_fail       = local.argocd["cleanup_on_fail"]
+  dependency_update     = local.argocd["dependency_update"]
+  disable_crd_hooks     = local.argocd["disable_crd_hooks"]
+  disable_webhooks      = local.argocd["disable_webhooks"]
+  render_subchart_notes = local.argocd["render_subchart_notes"]
+  replace               = local.argocd["replace"]
+  reset_values          = local.argocd["reset_values"]
+  reuse_values          = local.argocd["reuse_values"]
+  skip_crds             = local.argocd["skip_crds"]
+  verify                = local.argocd["verify"]
   values = [
-    local.values_argo-cd,
-    local.argo-cd["extra_values"]
+    local.values_argocd,
+    local.argocd["extra_values"]
   ]
-  namespace = local.argo-cd["create_ns"] ? kubernetes_namespace.argocd.*.metadata.0.name[count.index] : local.argo-cd["namespace"]
+  namespace = local.argocd["create_ns"] ? kubernetes_namespace.argocd.*.metadata.0.name[count.index] : local.argocd["namespace"]
 }
 
 resource "helm_release" "argo-events" {
@@ -209,7 +209,7 @@ resource "helm_release" "argo-events" {
     local.argo-events["extra_values"]
   ]
   depends_on = [
-    helm_release.argo-cd
+    helm_release.argocd
   ]
 }
 
@@ -240,7 +240,7 @@ resource "helm_release" "argo-rollouts" {
     local.argo-rollouts["extra_values"]
   ]
   depends_on = [
-    helm_release.argo-cd
+    helm_release.argocd
   ]
 }
 
@@ -271,7 +271,7 @@ resource "helm_release" "argo-workflows" {
     local.argo-workflows["extra_values"]
   ]
   depends_on = [
-    helm_release.argo-cd
+    helm_release.argocd
   ]
 }
 
@@ -302,7 +302,7 @@ resource "helm_release" "argocd-applicationset" {
     local.argocd-applicationset["extra_values"]
   ]
   depends_on = [
-    helm_release.argo-cd
+    helm_release.argocd
   ]
 }
 
@@ -333,7 +333,7 @@ resource "helm_release" "argocd-image-updater" {
     local.argocd-image-updater["extra_values"]
   ]
   depends_on = [
-    helm_release.argo-cd
+    helm_release.argocd
   ]
 }
 
@@ -364,6 +364,293 @@ resource "helm_release" "argocd-notifications" {
     local.argocd-notifications["extra_values"]
   ]
   depends_on = [
-    helm_release.argo-cd
+    helm_release.argocd
   ]
+}
+
+resource "kubernetes_network_policy" "argocd_default_deny" {
+  count = local.argocd["create_ns"] && local.argocd["enabled"] && local.argocd["default_network_policy"] ? 1 : 0
+
+  metadata {
+    name      = "${kubernetes_namespace.argocd.*.metadata.0.name[count.index]}-default-deny"
+    namespace = kubernetes_namespace.argocd.*.metadata.0.name[count.index]
+  }
+
+  spec {
+    pod_selector {
+    }
+    policy_types = ["Ingress"]
+  }
+}
+
+resource "kubernetes_network_policy" "argocd_allow_namespace" {
+  count = local.argocd["create_ns"] && local.argocd["enabled"] && local.argocd["default_network_policy"] ? 1 : 0
+
+  metadata {
+    name      = "${kubernetes_namespace.argocd.*.metadata.0.name[count.index]}-allow-namespace"
+    namespace = kubernetes_namespace.argocd.*.metadata.0.name[count.index]
+  }
+
+  spec {
+    pod_selector {
+    }
+
+    ingress {
+      from {
+        namespace_selector {
+          match_labels = {
+            name = kubernetes_namespace.argocd.*.metadata.0.name[count.index]
+          }
+        }
+      }
+    }
+
+    policy_types = ["Ingress"]
+  }
+}
+
+resource "kubernetes_network_policy" "argo-events_default_deny" {
+  count = local.argo-events["enabled"] && local.argo-events["default_network_policy"] ? 1 : 0
+
+  metadata {
+    name      = "argo-events-default-deny"
+    namespace = "argocd"
+  }
+
+  spec {
+    pod_selector {
+    }
+    policy_types = ["Ingress"]
+  }
+}
+
+resource "kubernetes_network_policy" "argo-events_allow_namespace" {
+  count = local.argo-events["enabled"] && local.argo-events["default_network_policy"] ? 1 : 0
+
+  metadata {
+    name      = "argo-events-allow-namespace"
+    namespace = "argocd"
+  }
+
+  spec {
+    pod_selector {
+    }
+
+    ingress {
+      from {
+        namespace_selector {
+          match_labels = {
+            name = "argocd"
+          }
+        }
+      }
+    }
+
+    policy_types = ["Ingress"]
+  }
+}
+
+resource "kubernetes_network_policy" "argo-rollouts_default_deny" {
+  count = local.argo-rollouts["enabled"] && local.argo-rollouts["default_network_policy"] ? 1 : 0
+
+  metadata {
+    name      = "argo-rollouts-default-deny"
+    namespace = "argocd"
+  }
+
+  spec {
+    pod_selector {
+    }
+    policy_types = ["Ingress"]
+  }
+}
+
+resource "kubernetes_network_policy" "argo-rollouts_allow_namespace" {
+  count = local.argo-rollouts["enabled"] && local.argo-rollouts["default_network_policy"] ? 1 : 0
+
+  metadata {
+    name      = "argo-rollouts-allow-namespace"
+    namespace = "argocd"
+  }
+
+  spec {
+    pod_selector {
+    }
+
+    ingress {
+      from {
+        namespace_selector {
+          match_labels = {
+            name = "argocd"
+          }
+        }
+      }
+    }
+
+    policy_types = ["Ingress"]
+  }
+}
+
+resource "kubernetes_network_policy" "argo-workflows_default_deny" {
+  count = local.argo-workflows["enabled"] && local.argo-workflows["default_network_policy"] ? 1 : 0
+
+  metadata {
+    name      = "argo-workflows-default-deny"
+    namespace = "argocd"
+  }
+
+  spec {
+    pod_selector {
+    }
+    policy_types = ["Ingress"]
+  }
+}
+
+resource "kubernetes_network_policy" "argo-workflows_allow_namespace" {
+  count = local.argo-workflows["enabled"] && local.argo-workflows["default_network_policy"] ? 1 : 0
+
+  metadata {
+    name      = "argo-workflows-allow-namespace"
+    namespace = "argocd"
+  }
+
+  spec {
+    pod_selector {
+    }
+
+    ingress {
+      from {
+        namespace_selector {
+          match_labels = {
+            name = "argocd"
+          }
+        }
+      }
+    }
+
+    policy_types = ["Ingress"]
+  }
+}
+
+resource "kubernetes_network_policy" "argocd-applicationset_default_deny" {
+  count = local.argocd-applicationset["enabled"] && local.argocd-applicationset["default_network_policy"] ? 1 : 0
+
+  metadata {
+    name      = "argocd-applicationset-default-deny"
+    namespace = "argocd"
+  }
+
+  spec {
+    pod_selector {
+    }
+    policy_types = ["Ingress"]
+  }
+}
+
+resource "kubernetes_network_policy" "argocd-applicationset_allow_namespace" {
+  count = local.argocd-applicationset["enabled"] && local.argocd-applicationset["default_network_policy"] ? 1 : 0
+
+  metadata {
+    name      = "argocd-applicationset-allow-namespace"
+    namespace = "argocd"
+  }
+
+  spec {
+    pod_selector {
+    }
+
+    ingress {
+      from {
+        namespace_selector {
+          match_labels = {
+            name = "argocd"
+          }
+        }
+      }
+    }
+
+    policy_types = ["Ingress"]
+  }
+}
+
+resource "kubernetes_network_policy" "argocd-image-updater_default_deny" {
+  count = local.argocd-image-updater["enabled"] && local.argocd-image-updater["default_network_policy"] ? 1 : 0
+
+  metadata {
+    name      = "argocd-image-updater-default-deny"
+    namespace = "argocd"
+  }
+
+  spec {
+    pod_selector {
+    }
+    policy_types = ["Ingress"]
+  }
+}
+
+resource "kubernetes_network_policy" "argocd-image-updater_allow_namespace" {
+  count = local.argocd-image-updater["enabled"] && local.argocd-image-updater["default_network_policy"] ? 1 : 0
+
+  metadata {
+    name      = "argocd-image-updater-allow-namespace"
+    namespace = "argocd"
+  }
+
+  spec {
+    pod_selector {
+    }
+
+    ingress {
+      from {
+        namespace_selector {
+          match_labels = {
+            name = "argocd"
+          }
+        }
+      }
+    }
+
+    policy_types = ["Ingress"]
+  }
+}
+
+resource "kubernetes_network_policy" "argocd-notifications_default_deny" {
+  count = local.argocd-notifications["enabled"] && local.argocd-notifications["default_network_policy"] ? 1 : 0
+
+  metadata {
+    name      = "argocd-notifications-default-deny"
+    namespace = "argocd"
+  }
+
+  spec {
+    pod_selector {
+    }
+    policy_types = ["Ingress"]
+  }
+}
+
+resource "kubernetes_network_policy" "argocd-notifications_allow_namespace" {
+  count = local.argocd-notifications["enabled"] && local.argocd-notifications["default_network_policy"] ? 1 : 0
+
+  metadata {
+    name      = "argocd-notifications-allow-namespace"
+    namespace = "argocd"
+  }
+
+  spec {
+    pod_selector {
+    }
+
+    ingress {
+      from {
+        namespace_selector {
+          match_labels = {
+            name = "argocd"
+          }
+        }
+      }
+    }
+
+    policy_types = ["Ingress"]
+  }
 }
