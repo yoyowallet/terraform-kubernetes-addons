@@ -140,7 +140,7 @@ dependencies:
   - name: atlantis
     version: atlantis-3.19.0
     repository: https://github.com/runatlantis/helm-charts
-  - name: argocd
+  - name: argo-cd
     version: 4.5.0
     repository: https://argoproj.github.io/argo-helm/
   - name: argo-events
