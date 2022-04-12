@@ -410,7 +410,7 @@ resource "kubernetes_network_policy" "argocd_allow_namespace" {
 }
 
 resource "kubernetes_network_policy" "argo-events_default_deny" {
-  count = local.argo-events["enabled"] && local.argo-events["default_network_policy"] ? 1 : 0
+  count = local.argocd["create_ns"] && local.argo-events["enabled"] && local.argo-events["default_network_policy"] ? 1 : 0
 
   metadata {
     name      = "argo-events-default-deny"
@@ -425,7 +425,7 @@ resource "kubernetes_network_policy" "argo-events_default_deny" {
 }
 
 resource "kubernetes_network_policy" "argo-events_allow_namespace" {
-  count = local.argo-events["enabled"] && local.argo-events["default_network_policy"] ? 1 : 0
+  count = local.argocd["create_ns"] && local.argo-events["enabled"] && local.argo-events["default_network_policy"] ? 1 : 0
 
   metadata {
     name      = "argo-events-allow-namespace"
@@ -451,7 +451,7 @@ resource "kubernetes_network_policy" "argo-events_allow_namespace" {
 }
 
 resource "kubernetes_network_policy" "argo-rollouts_default_deny" {
-  count = local.argo-rollouts["enabled"] && local.argo-rollouts["default_network_policy"] ? 1 : 0
+  count = local.argocd["create_ns"] && local.argo-rollouts["enabled"] && local.argo-rollouts["default_network_policy"] ? 1 : 0
 
   metadata {
     name      = "argo-rollouts-default-deny"
@@ -466,7 +466,7 @@ resource "kubernetes_network_policy" "argo-rollouts_default_deny" {
 }
 
 resource "kubernetes_network_policy" "argo-rollouts_allow_namespace" {
-  count = local.argo-rollouts["enabled"] && local.argo-rollouts["default_network_policy"] ? 1 : 0
+  count = local.argocd["create_ns"] && local.argo-rollouts["enabled"] && local.argo-rollouts["default_network_policy"] ? 1 : 0
 
   metadata {
     name      = "argo-rollouts-allow-namespace"
@@ -492,7 +492,7 @@ resource "kubernetes_network_policy" "argo-rollouts_allow_namespace" {
 }
 
 resource "kubernetes_network_policy" "argo-workflows_default_deny" {
-  count = local.argo-workflows["enabled"] && local.argo-workflows["default_network_policy"] ? 1 : 0
+  count = local.argocd["create_ns"] && local.argo-workflows["enabled"] && local.argo-workflows["default_network_policy"] ? 1 : 0
 
   metadata {
     name      = "argo-workflows-default-deny"
@@ -507,7 +507,7 @@ resource "kubernetes_network_policy" "argo-workflows_default_deny" {
 }
 
 resource "kubernetes_network_policy" "argo-workflows_allow_namespace" {
-  count = local.argo-workflows["enabled"] && local.argo-workflows["default_network_policy"] ? 1 : 0
+  count = local.argocd["create_ns"] && local.argo-workflows["enabled"] && local.argo-workflows["default_network_policy"] ? 1 : 0
 
   metadata {
     name      = "argo-workflows-allow-namespace"
@@ -533,7 +533,7 @@ resource "kubernetes_network_policy" "argo-workflows_allow_namespace" {
 }
 
 resource "kubernetes_network_policy" "argocd-applicationset_default_deny" {
-  count = local.argocd-applicationset["enabled"] && local.argocd-applicationset["default_network_policy"] ? 1 : 0
+  count = local.argocd["create_ns"] && local.argocd-applicationset["enabled"] && local.argocd-applicationset["default_network_policy"] ? 1 : 0
 
   metadata {
     name      = "argocd-applicationset-default-deny"
@@ -548,7 +548,7 @@ resource "kubernetes_network_policy" "argocd-applicationset_default_deny" {
 }
 
 resource "kubernetes_network_policy" "argocd-applicationset_allow_namespace" {
-  count = local.argocd-applicationset["enabled"] && local.argocd-applicationset["default_network_policy"] ? 1 : 0
+  count = local.argocd["create_ns"] && local.argocd-applicationset["enabled"] && local.argocd-applicationset["default_network_policy"] ? 1 : 0
 
   metadata {
     name      = "argocd-applicationset-allow-namespace"
@@ -574,7 +574,7 @@ resource "kubernetes_network_policy" "argocd-applicationset_allow_namespace" {
 }
 
 resource "kubernetes_network_policy" "argocd-image-updater_default_deny" {
-  count = local.argocd-image-updater["enabled"] && local.argocd-image-updater["default_network_policy"] ? 1 : 0
+  count = local.argocd["create_ns"] && local.argocd-image-updater["enabled"] && local.argocd-image-updater["default_network_policy"] ? 1 : 0
 
   metadata {
     name      = "argocd-image-updater-default-deny"
@@ -589,7 +589,7 @@ resource "kubernetes_network_policy" "argocd-image-updater_default_deny" {
 }
 
 resource "kubernetes_network_policy" "argocd-image-updater_allow_namespace" {
-  count = local.argocd-image-updater["enabled"] && local.argocd-image-updater["default_network_policy"] ? 1 : 0
+  count = local.argocd["create_ns"] && local.argocd-image-updater["enabled"] && local.argocd-image-updater["default_network_policy"] ? 1 : 0
 
   metadata {
     name      = "argocd-image-updater-allow-namespace"
@@ -615,7 +615,7 @@ resource "kubernetes_network_policy" "argocd-image-updater_allow_namespace" {
 }
 
 resource "kubernetes_network_policy" "argocd-notifications_default_deny" {
-  count = local.argocd-notifications["enabled"] && local.argocd-notifications["default_network_policy"] ? 1 : 0
+  count = local.argocd["create_ns"] && local.argocd-notifications["enabled"] && local.argocd-notifications["default_network_policy"] ? 1 : 0
 
   metadata {
     name      = "argocd-notifications-default-deny"
@@ -630,7 +630,7 @@ resource "kubernetes_network_policy" "argocd-notifications_default_deny" {
 }
 
 resource "kubernetes_network_policy" "argocd-notifications_allow_namespace" {
-  count = local.argocd-notifications["enabled"] && local.argocd-notifications["default_network_policy"] ? 1 : 0
+  count = local.argocd["create_ns"] && local.argocd-notifications["enabled"] && local.argocd-notifications["default_network_policy"] ? 1 : 0
 
   metadata {
     name      = "argocd-notifications-allow-namespace"
