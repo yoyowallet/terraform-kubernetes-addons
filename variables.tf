@@ -109,7 +109,7 @@ variable "kyverno" {
 variable "labels_prefix" {
   description = "Custom label prefix used for network policy namespace matching"
   type        = string
-  default     = "particule.io"
+  default     = "azrielidigital.com"
 }
 
 variable "linkerd2" {
@@ -255,7 +255,6 @@ variable "victoria-metrics-k8s-stack" {
   type        = any
   default     = {}
 }
-
 variable "tempo" {
   description = "Customize tempo chart, see `tempo.tf` for supported values"
   type        = any
@@ -269,7 +268,7 @@ variable "jaeger" {
 }
 
 variable "argo-cd" {
-  description = "Customize argo-cd chart, see `argocd.tf` for supported values"
+  description = "Customize argo-cd chart, see `argo-cd.tf` for supported values"
   type        = any
   default     = {}
 }
@@ -310,8 +309,8 @@ variable "argocd-applicationset" {
   default     = {}
 }
 
-variable "tekton-pipelines" {
-  description = "Customize tekton-pipelines chart, see `tekton-pipelines.tf` for supported values"
+variable "tekton-pipeline" {
+  description = "Customize tekton-pipeline chart, see `tekton-pipeline.tf` for supported values"
   type        = any
   default     = {}
 }
@@ -336,6 +335,12 @@ variable "istio-ingress" {
 
 variable "istio-egress" {
   description = "Customize istio-egress chart, see `istio-egress.tf` for supported values"
+  type        = any
+  default     = {}
+}
+
+variable "atlantis" {
+  description = "Customize atlantis chart, see `atlantis.tf` for supported values"
   type        = any
   default     = {}
 }
