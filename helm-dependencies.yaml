@@ -6,8 +6,8 @@ dependencies:
     version: 0.13.2
     repository: https://charts.admiralty.io
   - name: secrets-store-csi-driver
-    version: 0.2.0
-    repository: https://raw.githubusercontent.com/kubernetes-sigs/secrets-store-csi-driver/master/charts
+    version: 1.1.2
+    repository: https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts
   - name: aws-ebs-csi-driver
     version: 2.6.4
     repository: https://kubernetes-sigs.github.io/aws-ebs-csi-driver
@@ -57,7 +57,7 @@ dependencies:
     version: 2.6.2
     repository: https://kedacore.github.io/charts
   - name: keycloak
-    version: 17.0.3
+    version: 18.0.0
     repository: https://codecentric.github.io/helm-charts
   - name: kong
     version: 2.7.0
@@ -81,14 +81,14 @@ dependencies:
     repository: https://helm.linkerd.io/edge
     version: 21.12.4
   - name: loki-stack
-    version: 2.6.2
+    version: 2.6.4
     repository: https://grafana.github.io/helm-charts
   - name: loki
     version: 2.11.0
     repository: https://grafana.github.io/helm-charts
   - name: promtail
-    version: 3.11.0
-    repository: https://grafana.github.io/helm-charts
+    version: 4.2.0
+    repository: https://grafana.github.io/helm-charts  
   - name: metrics-server
     version: 3.8.2
     repository: https://kubernetes-sigs.github.io/metrics-server/
@@ -135,11 +135,11 @@ dependencies:
     version: 2.29.4
     repository: https://vmware-tanzu.github.io/helm-charts
   - name: victoria-metrics-k8s-stack
-    version: 0.7.12
+    version: 0.8.1
     repository: https://victoriametrics.github.io/helm-charts/
   - name: atlantis
-    version: atlantis-3.19.0
-    repository: https://github.com/runatlantis/helm-charts
+    version: 3.19.0
+    repository: https://runatlantis.github.io/helm-charts
   - name: argo-cd
     version: 4.5.0
     repository: https://argoproj.github.io/argo-helm/
@@ -161,7 +161,7 @@ dependencies:
   - name: argocd-notifications
     version: 1.8.0
     repository: https://argoproj.github.io/argo-helm/
-  - name: tekton-pipelines
+  - name: tekton-pipeline
     version: 0.27.2
     repository: https://cdfoundation.github.io/tekton-helm-chart/
   - name: tempo
