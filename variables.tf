@@ -309,8 +309,8 @@ variable "argocd-applicationset" {
   default     = {}
 }
 
-variable "tekton-pipelines" {
-  description = "Customize tekton-pipelines chart, see `tekton-pipelines.tf` for supported values"
+variable "tekton-pipeline" {
+  description = "Customize tekton-pipeline chart, see `tekton-pipeline.tf` for supported values"
   type        = any
   default     = {}
 }
